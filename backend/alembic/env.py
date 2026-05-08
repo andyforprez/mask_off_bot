@@ -9,13 +9,14 @@ from app.core.database import Base
 from app.models.user import User
 from app.models.tournament import Tournament
 from app.models.registration import TournamentRegistration
+from app.models.elimination import Elimination
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
 # Interpret the config file for Python logging.
-# This line sets up loggers basically.
+# This line sets up loggers basically.w
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
