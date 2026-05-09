@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { Notice, PageHeader } from "@app/components/MobileShell";
+import { Notice, PageHeader } from "@/app/components/mobile-shell";
 import { api, getApiError } from "@/app/lib/api";
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
