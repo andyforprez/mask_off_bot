@@ -7,6 +7,8 @@ from app.repositories.elimination_repository import (
 )
 from app.repositories.tournament_repository import get_tournament_by_id
 from app.models.user import User
+from app.core.websocket_manager import manager
+import asyncio
 
 
 def knock_out_player(
@@ -38,6 +40,16 @@ def knock_out_player(
         eliminated_by_user_id=eliminated_by_user_id,
         recorded_by=recorded_by
     )
+
+    asyncio.create_task(
+    manager.broadcast({
+        "type": "player_eliminated",
+        "tournament_id": tournament_id,
+        "eliminated_user_id": eliminated_user_id,
+        "eliminated_by_user_id": eliminated_by_user_id,
+        "place": elimination.place
+    })
+    )   
 
     return elimination
 
