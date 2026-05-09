@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { api } from "@/lib/api"
+import { api } from "@/app/lib/api"
 import { Tournament } from "@/types/tournament"
 
 export default function HomePage() {
