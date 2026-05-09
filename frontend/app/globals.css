@@ -1,26 +1,430 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Core palette */
+  --felt: #0d2818;
+  --felt-mid: #112d1c;
+  --felt-light: #1a3d28;
+  --felt-edge: #0a1f12;
+
+  --gold: #c9a84c;
+  --gold-light: #e8c96a;
+  --gold-dark: #9a7a30;
+  --gold-muted: #7a5f25;
+
+  --card-bg: #111f16;
+  --card-border: #1e3d28;
+  --card-hover: #162a1e;
+
+  --text-primary: #f0e6c8;
+  --text-secondary: #a89060;
+  --text-muted: #5a7060;
+  --text-dim: #344a3a;
+
+  --chip-red: #c0392b;
+  --chip-blue: #2471a3;
+  --chip-green: #1e8449;
+  --chip-black: #1a1a1a;
+
+  --success: #27ae60;
+  --danger: #e74c3c;
+  --warning: #f39c12;
+
+  /* Shadows */
+  --shadow-gold: 0 0 20px rgba(201, 168, 76, 0.15);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.5);
+  --shadow-deep: 0 8px 48px rgba(0, 0, 0, 0.8);
+
+  /* Fonts */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-ui: 'Rajdhani', sans-serif;
+  --font-body: 'Crimson Text', Georgia, serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background-color: var(--felt-edge);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(26, 61, 40, 0.6) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 100%, rgba(13, 40, 24, 0.8) 0%, transparent 60%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255,255,255,0.005) 2px,
+      rgba(255,255,255,0.005) 4px
+    ),
+    var(--felt-edge);
+  background-attachment: fixed;
+}
+
+/* Felt texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%230a1f12'/%3E%3Ccircle cx='1' cy='1' r='0.5' fill='rgba(255,255,255,0.02)'/%3E%3Ccircle cx='3' cy='3' r='0.5' fill='rgba(255,255,255,0.02)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Typography ──────────────────────────── */
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+h4, h5, h6, label, button, nav {
+  font-family: var(--font-ui);
+  letter-spacing: 0.05em;
+}
+
+/* ─── Gold Divider ──────────────────────────── */
+
+.gold-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-muted), var(--gold), var(--gold-muted), transparent);
+  margin: 1.5rem 0;
+}
+
+.gold-divider-sm {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
+  margin: 0.75rem 0;
+}
+
+/* ─── Cards ──────────────────────────── */
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(201,168,76,0.04) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.card:hover {
+  border-color: var(--gold-dark);
+  box-shadow: var(--shadow-gold), var(--shadow-card);
+  transform: translateY(-1px);
+}
+
+/* ─── Buttons ──────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.4rem;
+  border-radius: 4px;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+  color: var(--felt-edge);
+  box-shadow: 0 2px 12px rgba(201,168,76,0.25);
+}
+
+.btn-gold:hover {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light), #f5e08a);
+  box-shadow: 0 4px 20px rgba(201,168,76,0.4);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--gold-dark);
+  color: var(--gold);
+}
+
+.btn-outline:hover {
+  background: rgba(201,168,76,0.08);
+  border-color: var(--gold);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--card-border);
+}
+
+.btn-ghost:hover {
+  background: var(--card-hover);
+  color: var(--text-primary);
+  border-color: var(--text-muted);
+}
+
+/* ─── Badge ──────────────────────────── */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.badge-gold {
+  background: rgba(201,168,76,0.15);
+  border: 1px solid var(--gold-dark);
+  color: var(--gold);
+}
+
+.badge-green {
+  background: rgba(39,174,96,0.15);
+  border: 1px solid rgba(39,174,96,0.4);
+  color: #27ae60;
+}
+
+.badge-red {
+  background: rgba(231,76,60,0.15);
+  border: 1px solid rgba(231,76,60,0.4);
+  color: #e74c3c;
+}
+
+.badge-blue {
+  background: rgba(36,113,163,0.2);
+  border: 1px solid rgba(36,113,163,0.4);
+  color: #5dade2;
+}
+
+.badge-muted {
+  background: rgba(90,112,96,0.2);
+  border: 1px solid var(--text-dim);
+  color: var(--text-muted);
+}
+
+/* ─── Poker chip dots ──────────────────────────── */
+
+.chip-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 6px currentColor;
+}
+
+/* ─── Animations ──────────────────────────── */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 6px rgba(201,168,76,0.3); }
+  50%       { box-shadow: 0 0 18px rgba(201,168,76,0.6); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.animate-in {
+  animation: fadeInUp 0.4s ease both;
+}
+
+.animate-in-delay-1 { animation-delay: 0.05s; }
+.animate-in-delay-2 { animation-delay: 0.1s; }
+.animate-in-delay-3 { animation-delay: 0.15s; }
+.animate-in-delay-4 { animation-delay: 0.2s; }
+.animate-in-delay-5 { animation-delay: 0.25s; }
+
+.gold-shimmer {
+  background: linear-gradient(90deg, var(--gold-dark) 0%, var(--gold-light) 50%, var(--gold-dark) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ─── Scrollbar ──────────────────────────── */
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--felt-edge); }
+::-webkit-scrollbar-thumb { background: var(--gold-muted); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
+
+/* ─── Table ──────────────────────────── */
+
+.poker-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-ui);
+}
+
+.poker-table th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--card-border);
+}
+
+.poker-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(30,61,40,0.5);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.poker-table tr:last-child td { border-bottom: none; }
+.poker-table tbody tr { transition: background 0.12s; }
+.poker-table tbody tr:hover td { background: rgba(201,168,76,0.04); }
+
+/* ─── Input ──────────────────────────── */
+
+.poker-input {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  padding: 0.6rem 1rem;
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+}
+
+.poker-input:focus {
+  border-color: var(--gold-dark);
+  box-shadow: 0 0 0 2px rgba(201,168,76,0.1);
+}
+
+.poker-input::placeholder { color: var(--text-dim); }
+
+/* ─── Corner ornament ──────────────────────────── */
+
+.corner-ornament {
+  position: relative;
+}
+
+.corner-ornament::before,
+.corner-ornament::after {
+  content: '♦';
+  position: absolute;
+  color: var(--gold-muted);
+  font-size: 0.6rem;
+  opacity: 0.6;
+}
+
+.corner-ornament::before { top: 6px; left: 8px; }
+.corner-ornament::after  { bottom: 6px; right: 8px; transform: rotate(180deg); }
+
+/* ─── Stat box ──────────────────────────── */
+
+.stat-box {
+  text-align: center;
+  padding: 1rem;
+  border-right: 1px solid var(--card-border);
+}
+
+.stat-box:last-child { border-right: none; }
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+/* ─── Suit decorations ──────────────────────────── */
+
+.suit-spade::before   { content: '♠'; }
+.suit-heart::before   { content: '♥'; color: var(--chip-red); }
+.suit-diamond::before { content: '♦'; color: var(--gold); }
+.suit-club::before    { content: '♣'; }
+
+/* ─── Nav ──────────────────────────── */
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--gold);
+  background: rgba(201,168,76,0.08);
+}
+
+/* ─── Loading spinner ──────────────────────────── */
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--card-border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin-slow 0.8s linear infinite;
 }
